@@ -1,10 +1,11 @@
 {
-  "name":"raw-node-api-project",
-  "version":"1.0.0",
-  "main":"index.js",
+  "name": "raw-node-api-project",
+  "version": "1.0.0",
+  "main": "index.js",
   "author": "Saif Uddin",
   "scripts": {
-    "start": "nodemon index"
+    "start": "SET NODE_ENV=staging & nodemon index",
+    "production": "SET NODE_ENV=production & nodemon index"
   },
   "dependencies": {
     "nodemon": "^2.0.16",

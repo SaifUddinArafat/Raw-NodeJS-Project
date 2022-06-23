@@ -4,18 +4,18 @@
 # Author: Saif Uddin
 # Date:6-15-22
 */
-// dependencies
+/* ############# dependencies ############# */
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
 const routes = require('../routes');
 const { notFoundHandler } = require('../handlers/routeHandlers/notfoundHandler');
-
-// handler Object - Module Scaffolding
+const { parseJSON } = require('./utilities');
+/* ############# handler Object - Module Scaffolding ############# */
 const handler = {};
 
-// handle Request Response
+/* ############# handle Request Response ############# */
 handler.handleReqRes = (req, res) => {
-    // request handling
+    /* ###################### request handling ################### */
     // get url and parse it
     const parsedUrl = url.parse(req.url, true); // geting parsed url
     // check it using console.log(parsedurl);
@@ -48,16 +48,6 @@ handler.handleReqRes = (req, res) => {
     const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
     // every routes has a hadler which contin a function
     // so choosenHandler variable works as a function
-    chosenHandler(requestProperties, (statusCode, payload) => {
-        statusCode = typeof statusCode === 'number' ? statusCode : 500;
-        payload = typeof payload === 'object' ? payload : {};
-
-        const payloadString = JSON.stringify(payload);
-
-        // return the response
-        res.writeHead(statusCode);
-        res.end(payloadString);
-    });
 
     req.on('data', (buffer) => {
         realData += decoder.write(buffer);
@@ -65,14 +55,23 @@ handler.handleReqRes = (req, res) => {
 
     req.on('end', () => {
         realData += decoder.end();
-        console.log(realData);
+
+        requestProperties.body = parseJSON(realData);
+
+        chosenHandler(requestProperties, (statusCode, payload) => {
+            statusCode = typeof statusCode === 'number' ? statusCode : 500;
+            payload = typeof payload === 'object' ? payload : {};
+
+            const payloadString = JSON.stringify(payload);
+
+            // return the response
+            res.setHeader('Content-Type', 'applicatioin/json');
+            res.writeHead(statusCode);
+            res.end(payloadString);
+        });
         // response handle
         res.end('hello programmer');
     });
-    /*     console.log(method);
-    console.log(trimmedPath);
-    console.log(quaryStringObject);
-    console.log(reqHeaders); */
 };
 
 module.exports = handler;
