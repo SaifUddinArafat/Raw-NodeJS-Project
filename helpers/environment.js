@@ -13,12 +13,24 @@ environments.staging = {
     port: 3000,
     envName: 'staging',
     secretKey: 'alkdjflaaaldkjf',
+    maxChecks: 5,
+    twilio: {
+        fromPhone: '+15005550006',
+        accountSid: 'LaJhggHEdq5yKkPJdBXLMoAubyHwAB4ttD',
+        authToken: '7d6e068e84bebed232a0a220ac02aea7',
+    },
 };
 
 environments.production = {
     port: 5000,
     envName: 'production',
     secretKey: 'ldkjflakdfjals',
+    maxChecks: 5,
+    twilio: {
+        fromPhone: '+15005550006',
+        accountSid: 'LaJhggHEdq5yKkPJdBXLMoAubyHwAB4ttD',
+        authToken: '7d6e068e84bebed232a0a220ac02aea7',
+    },
 };
 // determine which environment was passed
 // eslint-disable-next-line prettier/prettier
