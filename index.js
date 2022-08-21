@@ -1,33 +1,26 @@
 /*
-# Title:Raw NodeJs Project
-# Description: Uptime Monitoring App Using Raw Node Js
+# Title: Project Initailization file
+# Description: Initail file to start server and worker
 # Author: Saif Uddin
 # Date:06-15-2022
 */
 
 // Dependencies
-const http = require('http');
-const { handleReqRes } = require('./helpers/handelReqRes');
-const environment = require('./helpers/environment');
-const { sendTwilioSms } = require('./helpers/notifications');
+const server = require('./lib/server');
+const worker = require('./lib/worker');
 
-// @TODO remove later
-sendTwilioSms('01839697262', 'Hello World', (err) => {
-    console.log('this is the error', err);
-});
 // app object - Module Scaffolding
 const app = {};
 
 // create server
-app.createServer = () => {
-    const server = http.createServer(app.reqResHandler);
-    server.listen(environment.port, () => {
-        console.log(`listening to port ${environment.port}`);
-    });
+app.init = () => {
+    // start the server
+    server.init();
+    // start the worker
+    worker.init();
 };
 
-// handle Request Response
-app.reqResHandler = handleReqRes;
+// initialize the init function
+app.init();
 
-// start the server
-app.createServer();
+module.exports = app;

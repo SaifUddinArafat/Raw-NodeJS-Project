@@ -9,7 +9,6 @@
 
 // dependencies
 const https = require('https');
-const querystring = require('querystring');
 const { twilio } = require('./environment');
 // module scaffolding
 const notifications = {};
@@ -45,7 +44,6 @@ notifications.sendTwilioSms = (phone, msg, callback) => {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
         };
-
         // Instantiate the request object
         const req = https.request(requestDetails, (res) => {
             // get the status of the sent request
@@ -62,7 +60,6 @@ notifications.sendTwilioSms = (phone, msg, callback) => {
         req.on('error', (e) => {
             callback(e);
         });
-
         req.write(stringifyPayload);
         req.end();
     } else {
